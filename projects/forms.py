@@ -4,7 +4,7 @@ from . import models
 
 
 
-class ProjectForm(forms.ModelForm):
+class ProjectCreateForm(forms.ModelForm):
     class Meta:
         model = models.Project
         fields = ['title', 'description', 'category']
@@ -12,4 +12,14 @@ class ProjectForm(forms.ModelForm):
             'title': forms.TextInput(),
             'description': forms.Textarea(),
             'category': forms.Select(),
+        }
+
+class ProjectUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.Project
+        fields = ['title', 'category', 'status']
+        widgets = {
+            'title': forms.TextInput(),
+            'category': forms.Select(),
+            'status': forms.Select(),
         }

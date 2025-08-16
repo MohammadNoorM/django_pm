@@ -35,4 +35,4 @@ class Project(models.Model):
 class Task(models.Model):
     description = models.TextField()
     is_completed = models.BooleanField(default=False)
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)

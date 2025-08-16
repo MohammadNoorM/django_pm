@@ -1,0 +1,9 @@
+{% load i18n %}
+{% block content %}
+    <h1>{% trans "Delete Project ???" %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="{% trans "Delete" %}">
+    </form>
+{% endblock content %}
