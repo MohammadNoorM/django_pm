@@ -8,7 +8,14 @@ from . import forms
 class ProjectListView(ListView):
     model = models.Project
     template_name = 'project/list.html'
-
+    paginate_by = 3
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        where = {}
+        q = self.request.GET.get('q', None)
+        if q:
+            where['title__icontains'] = q
+        return queryset.filter(**where)
 
 class ProjectCreateView(CreateView):
     model = models.Project
