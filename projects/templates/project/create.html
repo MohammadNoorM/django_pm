@@ -1,9 +1,18 @@
+{% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-    <h1>{% trans "Create Project" %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="{% trans "Create" %}">
-    </form>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="card col-md-6 px-0">
+                <h3 class="mb-0 py-2">{% trans 'New Project' %}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% include 'common/form.html' with form=form%}
+                    <button type="submit" class="btn btn-success">{% trans "Create" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

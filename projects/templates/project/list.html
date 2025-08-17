@@ -1,11 +1,58 @@
+{% extends "base.html" %}
 {% load i18n %}
+{% load humanize %}
+
 {% block content %}
-    <h2>{% trans "Project List" %}</h2>
-    <ul>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>{% trans "My Projects" %}</h2>
+        <div>
+            <a href="{% url 'project_create' %}" class="btn btn-outline-success">
+                <i class="bi bi-plus-circle"></i> {% trans "New Project" %}
+            </a>
+        </div>
+    </div>
+
+    <div class="row-5">
         {% for project in object_list %}
-            <li>{{ project.title }} <a href="{% url 'project_update' project.id %}">{% trans "Edit" %}</a></li>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p>
+                            <span class="badge bg-secondary">{{ project.get_status_display }}</span>
+                        </p>
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+                        <a href="{% url 'project_update' project.id %}" class="btn btn-primary">
+                            <i class="bi bi-pencil"></i> {% trans "Edit" %}
+                        </a>
+                        <a href="{% url 'project_delete' project.id %}" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> {% trans "Delete" %}
+                        </a>
+                        <div class="d-flex">
+                            <span class="text-muted me-auto small">
+                                <i class="bi bi-calendar"></i>
+                                <time datetime="{{ project.created_at }}">
+                                    {{ project.created_at|naturaltime }}
+                                </time>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% empty %}
-            <li>{% trans "No projects found." %}</li>
+            <div class="col-md-12">
+                <div class="h-100 p-5 bg-white border rounded-3 text-center">
+                    <p>
+                        {% trans "No projects found." %}
+                    </p>
+                    <p>
+                        <i class="bi bi-emoji-frown fs-1"></i>
+                    </p>
+                    <a href="{% url 'project_create' %}" class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> {% trans "New Project" %}
+                    </a>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
