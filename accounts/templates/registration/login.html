@@ -5,14 +5,14 @@
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="card col-md-6 px-0">
-                <div class="card-header text-white">
-                    <h3 class="mb-0">{% trans 'New Project' %}</h3>
+                <div class="card-header">
+                    <h3 class="mb-0">{% trans 'Login' %}</h3>
                 </div>
                 <div class="card-body">
                     <form method="post">
                         {% csrf_token %}
                         {% include 'common/form.html' with form=form%}
-                        <button type="submit" class="btn btn-success">{% trans "Create" %}</button>
+                        <button type="submit" class="btn btn-success btn-block">{% trans "Login" %}</button>
                     </form>
                 </div>
             </div>

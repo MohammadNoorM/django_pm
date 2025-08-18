@@ -12,13 +12,32 @@
             <a class="nav-link active" aria-current="page" href="{% url "project_list" %}">{% trans 'Home'%}</a>
             </li>
         </ul>
-        <form method="GET" action="{% url 'project_list' %}" class="d-flex">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="{% trans 'Search' %}" value="{{ request.GET.q }}">
-                <button type="submit" class="btn btn-outline-light"><i class="bi bi-search"></i></button>
-            </div>
-        </form>
-        </div>
+        {% if user.is_authenticated %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ user.username }}
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">{% trans 'Profile' %}</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item">{% trans 'Logout' %}</button>
+                        </form>
+                    </li>
+                </ul>
+            </ul>
+            <form method="GET" action="{% url 'project_list' %}" class="d-flex">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="{% trans 'Search' %}" value="{{ request.GET.q }}">
+                    <button type="submit" class="btn btn-outline-light"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+        {% else %}
+            <a class="btn btn-outline-light ms-auto" href="{% url 'login' %}">{% trans 'Login' %}</a>
+        {% endif %}
     </div>
     </nav>
 <header>
