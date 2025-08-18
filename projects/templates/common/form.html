@@ -1,14 +1,30 @@
-<ul>
-    {% for error in form.non_field_errors %}
-        <li class="list-group-item list-group-item-danger">{{ error }}</li>
-    {% endfor %}
-    {% for error in field.errors %}
-        <li class="list-group-item list-group-item-danger">{{ error }}</li>
-    {% endfor %}
+<!-- Display NON-FIELD errors (e.g., password mismatch) -->
+{% if form.non_field_errors %}
+    <ul class="list-group mb-3">
+        {% for error in form.non_field_errors %}
+            <li class="list-group-item list-group-item-danger">{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
+<!-- Render each field WITH its errors -->
 {% for field in form %}
     <div class="mb-3">
         <label class="form-label">{{ field.label }}</label>
         {{ field }}
+        
+        <!-- Display FIELD-SPECIFIC errors (e.g., "This password is too short") -->
+        {% if field.errors %}
+            <ul class="list-group mt-1">
+                {% for error in field.errors %}
+                    <li class="list-group-item list-group-item-danger">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        <!-- Optional: Help text -->
+        {% if field.help_text %}
+            <small class="text-muted">{{ field.help_text }}</small>
+        {% endif %}
     </div>
 {% endfor %}

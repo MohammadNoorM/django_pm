@@ -19,7 +19,7 @@
                     {{ user.username }}
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">{% trans 'Profile' %}</a></li>
+                    <li><a class="dropdown-item" href="{% url 'profile' %}">{% trans 'Profile' %}</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form method="post" action="{% url 'logout' %}" class="d-inline">
@@ -36,8 +36,9 @@
                 </div>
             </form>
         {% else %}
-            <a class="btn btn-outline-light ms-auto" href="{% url 'login' %}">{% trans 'Login' %}</a>
-        {% endif %}
+            <a class="btn btn-outline-light" href="{% url 'login' %}">{% trans 'Login' %}</a>
+            <a class="btn btn-outline-light" href="{% url 'register' %}">{% trans 'Register' %}</a>
+            {% endif %}
     </div>
     </nav>
 <header>
