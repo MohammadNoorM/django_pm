@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-18 18:36+0100\n"
+"POT-Creation-Date: 2025-08-19 13:32+0100\n"
 "PO-Revision-Date: 2025-08-19 18:00+0300\n"
 "Last-Translator: \n"
 "Language-Team: Arabic <ar@li.org>\n"
@@ -19,6 +19,18 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
+#: .\projects\admin.py:7
+msgid "Project Management"
+msgstr "إدارة المشاريع"
+
+#: .\projects\admin.py:8
+msgid "Project Management Admin"
+msgstr "إدارة المشاريع"
+
+#: .\projects\admin.py:9
+msgid "Site Administration"
+msgstr "إدارة الموقع"
+
 #: .\projects\forms.py:13
 msgid "Title"
 msgstr "العنوان"
@@ -27,25 +39,45 @@ msgstr "العنوان"
 msgid "Description"
 msgstr "الوصف"
 
-#: .\projects\forms.py:15
+#: .\projects\forms.py:15 .\projects\models.py:10
 msgid "Category"
 msgstr "الفئة"
 
-#: .\projects\models.py:14
+#: .\projects\models.py:11
+msgid "Categories"
+msgstr "الفئات"
+
+#: .\projects\models.py:20
 msgid "In Progress"
 msgstr "قيد التنفيذ"
 
-#: .\projects\models.py:15
+#: .\projects\models.py:21
 msgid "Completed"
 msgstr "مكتمل"
 
-#: .\projects\models.py:16
+#: .\projects\models.py:22
 msgid "Postponed"
 msgstr "مؤجل"
 
-#: .\projects\models.py:17
+#: .\projects\models.py:23
 msgid "Canceled"
 msgstr "ملغي"
+
+#: .\projects\models.py:43
+msgid "Project"
+msgstr "المشروع"
+
+#: .\projects\models.py:44
+msgid "Projects"
+msgstr "المشاريع"
+
+#: .\projects\models.py:52 .\projects\models.py:56
+msgid "Task"
+msgstr "المهمة"
+
+#: .\projects\models.py:53 .\projects\models.py:57
+msgid "Tasks"
+msgstr "المهام"
 
 #: .\projects\templates\partials\footer.html:5
 msgid "(c) 2025 Mohammad Noor"
