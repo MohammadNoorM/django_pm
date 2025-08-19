@@ -3,86 +3,243 @@
 {% load humanize %}
 
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>{% trans "My Projects" %}</h2>
-        <div>
-            <a href="{% url 'project_create' %}" class="btn btn-outline-success">
-                <i class="bi bi-plus-circle"></i> {% trans "New Project" %}
-            </a>
+    <div class="row mb-4" data-aos="fade-up">
+        <div class="col-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div class="page-title">
+                    <h2 class="mb-0 d-flex align-items-center">
+                        <span class="title-icon me-3">
+                            <i class="fas fa-layer-group"></i>
+                        </span>
+                        <span class="gradient-text">{% trans "My Projects" %}</span>
+                    </h2>
+                    <p class="text-muted mb-0 mt-2">{% trans "Manage and track your projects" %}</p>
+                </div>
+                <div>
+                    <a href="{% url 'project_create' %}" class="btn btn-primary btn-lg btn-icon">
+                        <i class="fas fa-plus"></i>
+                        <span>{% trans "New Project" %}</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row-5">
+    {% if object_list %}
+
+    <div class="row">
         {% for project in object_list %}
-            <div class="col-md-4">
-                <div class="card mb-3">
+            <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:1 }}00">
+                <div class="card project-card">
                     <div class="card-body">
-                        <p>
-                            <span class="badge bg-secondary">{{ project.get_status_display }}</span>
-                        </p>
-                        <h5 class="card-title">{{ project.title }}</h5>
-                        <p class="card-text">{{ project.description|truncatewords:20 }}</p>
-                        <a href="{% url 'project_update' project.id %}" class="btn btn-primary">
-                            <i class="bi bi-pencil"></i> {% trans "Edit" %}
-                        </a>
-                        <a href="{% url 'project_delete' project.id %}" class="btn btn-danger">
-                            <i class="bi bi-trash"></i> {% trans "Delete" %}
-                        </a>
-                        <div class="d-flex">
-                            <span class="text-muted me-auto small">
-                                <i class="bi bi-calendar"></i>
+                        <div class="project-header">
+                            <span class="project-status 
+                                {% if project.status == 2 %}status-completed
+                                {% elif project.status == 1 %}status-in-progress
+                                {% elif project.status == 3 %}status-postponed
+                                {% elif project.status == 4 %}status-canceled{% endif %}">
+                                <i class="fas 
+                                {% if project.status == 2 %}fa-check-circle
+                                {% elif project.status == 1 %}fa-clock
+                                {% elif project.status == 3 %}fa-pause-circle
+                                {% elif project.status == 4 %}fa-times-circle{% endif %} me-1"></i>
+                                {{ project.get_status_display }}
+                            </span>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">{{ project.title }}</h3>
+                            <p class="project-description">{{ project.description|truncatewords:20 }}</p>
+                        </div>
+                        
+                        <div class="project-meta mb-4">
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="far fa-calendar me-2"></i>
                                 <time datetime="{{ project.created_at }}">
                                     {{ project.created_at|naturaltime }}
                                 </time>
-                            </span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-actions mt-auto">
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'project_update' project.id %}" class="btn btn-light btn-icon flex-grow-1">
+                                    <i class="fas fa-edit"></i>
+                                    <span>{% trans "Edit" %}</span>
+                                </a>
+                                <a href="{% url 'project_delete' project.id %}" class="btn btn-outline-danger btn-icon flex-grow-1">
+                                    <i class="fas fa-trash-alt"></i>
+                                    <span>{% trans "Delete" %}</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% empty %}
-            <div class="col-md-12">
-                <div class="h-100 p-5 bg-white border rounded-3 text-center">
-                    <p>
-                        {% trans "No projects found." %}
+        {% endfor %}
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="d-flex justify-content-center mt-4 mb-5" data-aos="fade-up">
+            <nav aria-label="{% trans 'Page navigation' %}" dir="rtl">
+                <ul class="pagination pagination-rtl">
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="{% trans 'Next' %}">
+                                <span class="d-none d-md-inline">{% trans 'Next' %}</span>
+                                <i class="fas fa-chevron-left ms-1"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="{% trans 'Previous' %}">
+                                <i class="fas fa-chevron-right me-1"></i>
+                                <span class="d-none d-md-inline">{% trans 'Previous' %}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
+    {% else %}
+        <div class="row">
+            <div class="col-12" data-aos="fade-up">
+                <div class="empty-state text-center py-5">
+                    <div class="empty-state-icon mb-4">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="empty-state-title">{% trans "No Projects Yet!" %}</h3>
+                    <p class="empty-state-description mb-4">
+                        {% trans "Ready to start managing your projects? Create your first project now and begin tracking your progress!" %}
                     </p>
-                    <p>
-                        <i class="bi bi-emoji-frown fs-1"></i>
-                    </p>
-                    <a href="{% url 'project_create' %}" class="btn btn-success">
-                        <i class="bi bi-plus-circle"></i> {% trans "New Project" %}
+                    <a href="{% url 'project_create' %}" class="btn btn-primary btn-lg btn-icon">
+                        <i class="fas fa-plus"></i>
+                        <span>{% trans "Create Your First Project" %}</span>
                     </a>
+                    <div class="empty-state-help mt-4">
+                        <p class="text-muted small">
+                            <i class="fas fa-info-circle me-1"></i>
+                            {% trans "Projects help you organize and track your tasks effectively" %}
+                        </p>
+                    </div>
                 </div>
             </div>
-        {% endfor %}
-        {% if page_obj.paginator.count > 0 %}
-            <div class="d-flex justify-content-center bd-highlight mb-3">
-                <nav>
-                    <ul class="pagination">
-                        {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-                                    {% trans 'Previous'%}
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="page-item disabled">
-                                <a class="page-link">{% trans 'Previous' %}</a>
-                            </li>
-                        {% endif %}
-                        {% if page_obj.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
-                                    {% trans 'Next' %}
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="page-item disabled">
-                                <a class="page-link">{% trans 'Next' %}</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
-        {% endif %}
-    </div>
-{% endblock %}
+        </div>
+    {% endif %}
+{% endblock content %}
+
+{% block extra_css %}
+<style>
+    .title-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(45deg, var(--primary-color), var(--info-color));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+
+    .gradient-text {
+        background: linear-gradient(45deg, var(--primary-color), var(--info-color));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+    }
+
+    .empty-state {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 3rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-state-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, var(--primary-color), var(--info-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: white;
+        margin: 0 auto;
+        box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+    }
+
+    .empty-state-title {
+        color: var(--secondary-color);
+        font-weight: 600;
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state-description {
+        color: var(--secondary-color);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .project-meta {
+        padding-top: 1rem;
+        border-top: 1px solid rgba(229, 231, 235, 0.5);
+    }
+
+    .project-actions {
+        padding-top: 1rem;
+        border-top: 1px solid rgba(229, 231, 235, 0.5);
+    }
+
+    /* Pagination Styles */
+    .pagination {
+        gap: 0.5rem;
+    }
+
+    .page-link {
+        border: none;
+        padding: 0.75rem 1rem;
+        color: var(--secondary-color);
+        background-color: white;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-link:hover {
+        background: var(--light-bg);
+        color: var(--primary-color);
+        transform: translateY(-1px);
+    }
+
+    .page-item.active .page-link {
+        background: linear-gradient(45deg, var(--primary-color), var(--info-color));
+        border: none;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .page-item.disabled .page-link {
+        background: var(--light-bg);
+        color: #adb5bd;
+    }
+</style>
+{% endblock extra_css %}

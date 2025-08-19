@@ -4,16 +4,34 @@
 {% block content %}
     <div class="container">
         <div class="row justify-content-md-center">
-            <div class="card col-md-6 px-0">
-                <div class="card-header text-white">
-                    <h3 class="mb-0">{% trans 'New Project' %}</h3>
+            <div class="col-md-8 col-lg-6">
+                <div class="d-flex align-items-center mb-4">
+                    <a href="{% url 'project_list' %}" class="btn btn-outline-secondary me-3">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h2 class="mb-0">
+                        <i class="fas fa-plus-circle text-success me-2"></i>
+                        {% trans 'Create New Project' %}
+                    </h2>
                 </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        {% include 'common/form.html' with form=form%}
-                        <button type="submit" class="btn btn-success">{% trans "Create" %}</button>
-                    </form>
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <p class="text-muted mb-4">
+                            {% trans 'Fill in the details below to create a new project.' %}
+                        </p>
+                        <form method="post">
+                            {% csrf_token %}
+                            {% include 'common/form.html' with form=form %}
+                            <div class="d-flex justify-content-end mt-4">
+                                <a href="{% url 'project_list' %}" class="btn btn-light me-2">
+                                    {% trans "Cancel" %}
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check me-2"></i>{% trans "Create Project" %}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,30 +1,51 @@
-<!-- Display NON-FIELD errors (e.g., password mismatch) -->
 {% if form.non_field_errors %}
-    <ul class="list-group mb-3">
+    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
         {% for error in form.non_field_errors %}
-            <li class="list-group-item list-group-item-danger">{{ error }}</li>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span>{{ error }}</span>
+            </div>
         {% endfor %}
-    </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 {% endif %}
 
-<!-- Render each field WITH its errors -->
 {% for field in form %}
-    <div class="mb-3">
-        <label class="form-label">{{ field.label }}</label>
-        {{ field }}
+    <div class="form-group mb-3">
+        <label class="form-label fw-bold">
+            {{ field.label }}
+            {% if field.field.required %}
+                <span class="text-danger">*</span>
+            {% endif %}
+        </label>
         
-        <!-- Display FIELD-SPECIFIC errors (e.g., "This password is too short") -->
+        <div class="input-group">
+            {% if field.name == 'username' %}
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+            {% elif field.name == 'email' %}
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            {% elif 'password' in field.name %}
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            {% endif %}
+            {{ field }}
+        </div>
+        
         {% if field.errors %}
-            <ul class="list-group mt-1">
+            <div class="mt-2">
                 {% for error in field.errors %}
-                    <li class="list-group-item list-group-item-danger">{{ error }}</li>
+                    <div class="alert alert-danger py-2 mb-2">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        {{ error }}
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         {% endif %}
         
-        <!-- Optional: Help text -->
         {% if field.help_text %}
-            <small class="text-muted">{{ field.help_text }}</small>
+            <small class="form-text text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                {{ field.help_text }}
+            </small>
         {% endif %}
     </div>
 {% endfor %}

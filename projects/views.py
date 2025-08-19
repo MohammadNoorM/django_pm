@@ -8,7 +8,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 class ProjectListView(LoginRequiredMixin,ListView):
     model = models.Project
     template_name = 'project/list.html'
-    paginate_by = 3
+    paginate_by = 6
+    ordering = ['-created_at']
+
     def get_queryset(self):
         queryset = super().get_queryset()
         where = {'user_id': self.request.user}
